@@ -1,0 +1,16 @@
+{
+  "pluginAlias": "MessanaSystem",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "apikey": {
+        "title": "apikey",
+        "type": "string",
+        "required": true,
+        "default": "XYZ"
+      }
+    }
+  }
+}
