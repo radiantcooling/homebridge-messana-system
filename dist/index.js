@@ -19,7 +19,8 @@ module.exports = function (homebridge) {
   HomebridgeAPI = homebridge
 }
 
-function SwitchES(log, config) {
+function SwitchES(log, config, api) {
+  this.apikey = util.getApiKey(api)
   this.log = log
   this.config = config
   this.name = config.name
@@ -36,15 +37,21 @@ SwitchES.prototype = {
   },
 
   getEnergySaving: function(callback) {
-    // this.log("[+] getEnergySaving from:", this.apiroute + defaultJSON.system.apis.getEnergySaving + "?apikey=" + defaultJSON.apikey);
+    // this.log("[+] getEnergySaving from:", this.apiroute + defaultJSON.system.apis.getEnergySaving + "?apikey=" + this.apikey);
 
-    var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + defaultJSON.apikey;
+    var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey;
     util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
       if (error) {
         this.log("[!] Error getting System State: %s", error.message);
         callback(error);
       } else {
-        var json = JSON.parse(responseBody);
+        try{
+          var json = JSON.parse(responseBody);
+        }
+        catch(err){
+          callback(-1);
+          return
+        }
         this.onSystem = (json.status == 0)? false : true
         if(!this.onSystem) {
           this.on = 0
@@ -52,13 +59,19 @@ SwitchES.prototype = {
         }
         else {
 
-          var url = this.apiroute + defaultJSON.system.apis.getEnergySaving + "?apikey=" + defaultJSON.apikey;
+          var url = this.apiroute + defaultJSON.system.apis.getEnergySaving + "?apikey=" + this.apikey;
           util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
             if (error) {
               this.log("[!] Error getting getEnergySaving: %s", error.message);
               callback(error);
             } else {
-              var json = JSON.parse(responseBody);
+              try{
+                var json = JSON.parse(responseBody);
+              }
+              catch(err){
+                callback(-1);
+                return
+              }
               this.on = json.status;
               callback(null, this.on);
             }
@@ -70,13 +83,13 @@ SwitchES.prototype = {
   },
 
   setEnergySaving: function(value, callback) {
-    // this.log("[+] setEnergySaving from:", this.apiroute + defaultJSON.system.apis.setEnergySaving + "?apikey=" + defaultJSON.apikey);
+    // this.log("[+] setEnergySaving from:", this.apiroute + defaultJSON.system.apis.setEnergySaving + "?apikey=" + this.apikey);
     if(!this.onSystem){
       this.log("System OFF - Unable to change")
       callback();
       return
     }
-    var url = this.apiroute + defaultJSON.system.apis.setEnergySaving + "?apikey=" + defaultJSON.apikey;
+    var url = this.apiroute + defaultJSON.system.apis.setEnergySaving + "?apikey=" + this.apikey;
     var body = {
       value: (value)? 1 : 0
     }
@@ -122,7 +135,8 @@ SwitchES.prototype = {
   }
 }
 
-function SwitchSB(log, config) {
+function SwitchSB(log, config, api) {
+  this.apikey = util.getApiKey(api)
   this.log = log
   this.config = config
   this.name = config.name
@@ -140,15 +154,21 @@ SwitchSB.prototype = {
   },
 
   getSetback: function(callback) {
-    // this.log("[+] getSetback from:", this.apiroute + defaultJSON.system.apis.getSetback + "?apikey=" + defaultJSON.apikey);
+    // this.log("[+] getSetback from:", this.apiroute + defaultJSON.system.apis.getSetback + "?apikey=" + this.apikey);
 
-    var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + defaultJSON.apikey;
+    var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey;
     util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
       if (error) {
         this.log("[!] Error getting System State: %s", error.message);
         callback(error);
       } else {
-        var json = JSON.parse(responseBody);
+        try{
+          var json = JSON.parse(responseBody);
+        }
+        catch(err){
+          callback(-1);
+          return
+        }
         this.onSystem = (json.status == 0)? false : true
         if(!this.onSystem) {
           this.on = 0
@@ -156,13 +176,19 @@ SwitchSB.prototype = {
         }
         else {
 
-          var url = this.apiroute + defaultJSON.system.apis.getSetback + "?apikey=" + defaultJSON.apikey;
+          var url = this.apiroute + defaultJSON.system.apis.getSetback + "?apikey=" + this.apikey;
           util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
             if (error) {
               this.log("[!] Error getting getSetback: %s", error.message);
               callback(error);
             } else {
-              var json = JSON.parse(responseBody);
+              try{
+                var json = JSON.parse(responseBody);
+              }
+              catch(err){
+                callback(-1);
+                return
+              }
               this.on = json.status
               // this.log("[*] getSetback: %s", json.on);
               callback(null, this.on);
@@ -176,13 +202,13 @@ SwitchSB.prototype = {
   },
 
   setSetback: function(value, callback) {
-    // this.log("[+] setSetback from:", this.apiroute + defaultJSON.system.apis.setSetback + "?apikey=" + defaultJSON.apikey);
+    // this.log("[+] setSetback from:", this.apiroute + defaultJSON.system.apis.setSetback + "?apikey=" + this.apikey);
     if(!this.onSystem){
       this.log("System OFF - Unable to change")
       callback();
       return
     }
-    var url = this.apiroute + defaultJSON.system.apis.setSetback + "?apikey=" + defaultJSON.apikey;
+    var url = this.apiroute + defaultJSON.system.apis.setSetback + "?apikey=" + this.apikey;
     var body = {
       value: (value)? 1 : 0
     }
@@ -228,7 +254,8 @@ SwitchSB.prototype = {
   }
 }
 
-function SwitchAir(log, config) {
+function SwitchAir(log, config, api) {
+  this.apikey = util.getApiKey(api)
   this.log = log
   this.config = config
   this.name = config.name
@@ -246,14 +273,20 @@ SwitchAir.prototype = {
   },
 
   getAirOn: function(callback) {
-    // this.log("[+] getAirOn from:", this.apiroute + defaultJSON.system.apis.getAirOn + this.id + "?apikey=" + defaultJSON.apikey);
-    var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + defaultJSON.apikey;
+    // this.log("[+] getAirOn from:", this.apiroute + defaultJSON.system.apis.getAirOn + this.id + "?apikey=" + this.apikey);
+    var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey;
     util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
       if (error) {
         this.log("[!] Error getting System State: %s", error.message);
         callback(error);
       } else {
-        var json = JSON.parse(responseBody);
+        try{
+          var json = JSON.parse(responseBody);
+        }
+        catch(err){
+          callback(-1);
+          return
+        }
         this.onSystem = (json.status == 0)? false : true
         if(!this.onSystem) {
           this.on = 0
@@ -261,13 +294,19 @@ SwitchAir.prototype = {
         }
         else {
 
-          var url = this.apiroute + defaultJSON.system.apis.getAirOn + this.id + "?apikey=" + defaultJSON.apikey;
+          var url = this.apiroute + defaultJSON.system.apis.getAirOn + this.id + "?apikey=" + this.apikey;
           util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
             if (error) {
               this.log("[!] Error getting getAirOn: %s", error.message);
               callback(error);
             } else {
-              var json = JSON.parse(responseBody);
+              try{
+                var json = JSON.parse(responseBody);
+              }
+              catch(err){
+                callback(-1);
+                return
+              }
               this.on = (json.status == 0)? false : true
               // this.log("[*] getAirOn: %s", json.on);
               callback(null, this.on);
@@ -287,8 +326,8 @@ SwitchAir.prototype = {
       callback();
       return
     }
-    // this.log("[+] setAirOn from:", this.apiroute + defaultJSON.system.apis.setAirOn + "?apikey=" + defaultJSON.apikey);
-    var url = this.apiroute + defaultJSON.system.apis.setAirOn + "?apikey=" + defaultJSON.apikey;
+    // this.log("[+] setAirOn from:", this.apiroute + defaultJSON.system.apis.setAirOn + "?apikey=" + this.apikey);
+    var url = this.apiroute + defaultJSON.system.apis.setAirOn + "?apikey=" + this.apikey;
     var body = {
       id: this.id,
       value: (value)? 1 : 0
@@ -336,7 +375,8 @@ SwitchAir.prototype = {
   }
 }
 
-function SwitchSystem(log, config) {
+function SwitchSystem(log, config, api) {
+  this.apikey = util.getApiKey(api)
   this.log = log
   this.config = config
   this.name = config.name
@@ -358,14 +398,20 @@ SwitchSystem.prototype = {
   },
 
   getSystemOn: function(callback) {
-    this.log("[+] getSystemn from:", this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + defaultJSON.apikey);
-    var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + defaultJSON.apikey;
+    this.log("[+] getSystemn from:", this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey);
+    var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey;
     util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
       if (error) {
         this.log("[!] Error getting getSystemOn: %s", error.message);
         callback(error);
       } else {
-        var json = JSON.parse(responseBody);
+        try{
+          var json = JSON.parse(responseBody);
+        }
+        catch(err){
+          callback(-1);
+          return
+        }
         this.on = (json.status == 0)? false : true
         // this.log("[*] getSystemOn: %s", json.on);
         callback(null, this.on);
@@ -374,8 +420,8 @@ SwitchSystem.prototype = {
   },
 
   setSystemOn: function(value, callback) {
-    // this.log("[+] setSystemOn from:", this.apiroute + defaultJSON.system.apis.setSystemOn + "?apikey=" + defaultJSON.apikey);
-    var url = this.apiroute + defaultJSON.system.apis.setSystemOn + "?apikey=" + defaultJSON.apikey;
+    // this.log("[+] setSystemOn from:", this.apiroute + defaultJSON.system.apis.setSystemOn + "?apikey=" + this.apikey);
+    var url = this.apiroute + defaultJSON.system.apis.setSystemOn + "?apikey=" + this.apikey;
     var body = {
       value: (value)? 1 : 0
     }
@@ -422,7 +468,8 @@ SwitchSystem.prototype = {
   }
 }
 
-function SwitchDhw(log, config) {
+function SwitchDhw(log, config, api) {
+  this.apikey = util.getApiKey(api)
   this.log = log
   this.config = config
   this.name = config.name
@@ -441,9 +488,9 @@ SwitchDhw.prototype = {
   },
 
   getDhwOn: function(callback) {
-    // this.log("[+] getDhwOn from:", this.apiroute + defaultJSON.system.apis.getDhwOn + this.id + "?apikey=" + defaultJSON.apikey);
+    // this.log("[+] getDhwOn from:", this.apiroute + defaultJSON.system.apis.getDhwOn + this.id + "?apikey=" + this.apikey);
 
-    // var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + defaultJSON.apikey;
+    // var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey;
     // util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
     //   if (error) {
     //     this.log("[!] Error getting System State: %s", error.message);
@@ -457,13 +504,19 @@ SwitchDhw.prototype = {
     //     }
     //     else {
 
-          var url = this.apiroute + defaultJSON.system.apis.getDhwOn + this.id + "?apikey=" + defaultJSON.apikey;
+          var url = this.apiroute + defaultJSON.system.apis.getDhwOn + this.id + "?apikey=" + this.apikey;
           util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
             if (error) {
               this.log("[!] Error getting getDhwOn: %s", error.message);
               callback(error);
             } else {
-              var json = JSON.parse(responseBody);
+              try{
+                var json = JSON.parse(responseBody);
+              }
+              catch(err){
+                callback(-1);
+                return
+              }
               this.on = (json.status == 0)? false : true
               // this.log("[*] getDhwOn: %s", json.on);
               callback(null, this.on);
@@ -477,8 +530,8 @@ SwitchDhw.prototype = {
   },
 
   setDhwOn: function(value, callback) {
-    // this.log("[+] setDhwOn from:", this.apiroute + defaultJSON.system.apis.setDhwOn + "?apikey=" + defaultJSON.apikey);
-    var url = this.apiroute + defaultJSON.system.apis.setDhwOn + "?apikey=" + defaultJSON.apikey;
+    // this.log("[+] setDhwOn from:", this.apiroute + defaultJSON.system.apis.setDhwOn + "?apikey=" + this.apikey);
+    var url = this.apiroute + defaultJSON.system.apis.setDhwOn + "?apikey=" + this.apikey;
     var body = {
       id: this.id,
       value: (value)? 1 : 0

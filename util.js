@@ -42,3 +42,11 @@ exports.convertF2C = (valueF, unit) => {
   if(unit == 0) return valueF;//Celsius
   return Math.round((Math.floor(valueF)-32)*5/9*2)/2
 }
+
+exports.getApiKey = (api) => {
+  var messanaPlatform = (require(api.user.configPath()))
+  .platforms.find(
+    function(platform){ return platform["platform"] === "MessanaPlatform" }
+  )
+  return (messanaPlatform) ? messanaPlatform.apikey: ""
+}

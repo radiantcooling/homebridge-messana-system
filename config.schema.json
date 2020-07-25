@@ -1,15 +1,15 @@
 {
-  "pluginAlias": "MessanaSystem",
+  "pluginAlias": "MessanaPlatform",
   "pluginType": "platform",
   "singular": true,
   "schema": {
     "type": "object",
     "properties": {
       "apikey": {
-        "title": "apikey",
+        "title": "API User Key",
         "type": "string",
         "required": true,
-        "default": "XYZ"
+        "default": "xyz"
       }
     }
   }
