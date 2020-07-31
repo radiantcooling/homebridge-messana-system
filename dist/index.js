@@ -4,13 +4,13 @@ const defaultJSON = require('./../default.json')
 const packageJSON = require('./../package.json')
 var request = require("request");
 const util = require('./../util.js')
-const HomebridgeLib = require('homebridge-lib');
 
 let Service, Characteristic, HomebridgeAPI
 
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
+  homebridge.registerPlatform("MessanaPlatform", MessanaPlatform);
   homebridge.registerAccessory('messana-system', 'SwitchES', SwitchES)
   homebridge.registerAccessory('messana-system', 'SwitchSB', SwitchSB)
   homebridge.registerAccessory('messana-system', 'SwitchATU', SwitchAir)
@@ -18,6 +18,9 @@ module.exports = function (homebridge) {
   homebridge.registerAccessory('messana-system', 'SwitchSystem', SwitchSystem)
   HomebridgeAPI = homebridge
 }
+
+function MessanaPlatform(log, config, api) {}
+MessanaPlatform.prototype = {}
 
 function SwitchES(log, config, api) {
   this.apikey = util.getApiKey(api)
@@ -385,9 +388,6 @@ function SwitchSystem(log, config, api) {
   this.apiroute = util.staticValues.apiroute
   this.on = false
   this.service = new Service.Switch(this.name)
-  console.log('SwitchSystem')
-  const optionParser = new HomebridgeLib.OptionParser(this.config, true);
-  console.log(optionParser.stringKey('apikey'))
 }
 
 SwitchSystem.prototype = {
@@ -398,7 +398,7 @@ SwitchSystem.prototype = {
   },
 
   getSystemOn: function(callback) {
-    this.log("[+] getSystemn from:", this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey);
+    // this.log("[+] getSystem from:", this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey);
     var url = this.apiroute + defaultJSON.system.apis.getSystemOn + "?apikey=" + this.apikey;
     util.httpRequest(url, '', 'GET', function(error, response, responseBody) {
       if (error) {

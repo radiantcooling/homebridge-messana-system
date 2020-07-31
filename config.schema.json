@@ -9,7 +9,7 @@
         "title": "API User Key",
         "type": "string",
         "required": true,
-        "default": "xyz"
+        "default": ""
       }
     }
   }
