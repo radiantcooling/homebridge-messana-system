@@ -1,0 +1,35 @@
+{
+    "private": false,
+    "displayName": "Messana System",
+    "name": "homebridge-messana-system",
+    "version": "1.1.0",
+    "description": "Plugin to install the following accessories: SwitchES, SwitchSB, SwitchATU, SwitchDHW, SwitchSystem",
+    "license": "Apache-2.0",
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/radiantcooling/homebridge-messana-system.git"
+    },
+    "bugs": {
+      "url": "https://github.com/radiantcooling/homebridge-messana-system/issues"
+    },
+    "engines": {
+      "node": ">=10.17.0",
+      "homebridge": ">0.4.53"
+    },
+    "main": "dist/index.js",
+    "scripts": {},
+    "keywords": [
+      "homebridge-plugin"
+    ],
+    "dependencies": {},
+    "devDependencies": {
+      "homebridge": "^1.1.1"
+    },
+    "models": [
+      "SwitchES",
+      "SwitchSB",
+      "SwitchATU",
+      "SwitchDHW",
+      "SwitchSystem"
+    ]
+  }
