@@ -11,11 +11,11 @@ module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
   homebridge.registerPlatform("MessanaPlatform", MessanaPlatform);
-  homebridge.registerAccessory('messana-system', 'SwitchES', SwitchES)
-  homebridge.registerAccessory('messana-system', 'SwitchSB', SwitchSB)
-  homebridge.registerAccessory('messana-system', 'SwitchATU', SwitchAir)
-  homebridge.registerAccessory('messana-system', 'SwitchDHW', SwitchDhw)
-  homebridge.registerAccessory('messana-system', 'SwitchSystem', SwitchSystem)
+  homebridge.registerAccessory('homebridge-messana-system', 'SwitchES', SwitchES)
+  homebridge.registerAccessory('homebridge-messana-system', 'SwitchSB', SwitchSB)
+  homebridge.registerAccessory('homebridge-messana-system', 'SwitchATU', SwitchAir)
+  homebridge.registerAccessory('homebridge-messana-system', 'SwitchDHW', SwitchDhw)
+  homebridge.registerAccessory('homebridge-messana-system', 'SwitchSystem', SwitchSystem)
   HomebridgeAPI = homebridge
 }
 
